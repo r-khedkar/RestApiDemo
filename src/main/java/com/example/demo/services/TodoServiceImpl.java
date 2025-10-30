@@ -25,7 +25,8 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public Todo getTodoById(Long id) {
-        return todoRepository.findById(id).get();
+        return todoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Todo not found with id: " + id));
     }
 
     @Override
@@ -35,8 +36,8 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public void updateTodo(Long id, Todo todo) {
-        Todo todoFromDb = todoRepository.findById(id).get();
-        System.out.println(todoFromDb.toString());
+        Todo todoFromDb = todoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Todo not found with id: " + id));
         todoFromDb.setTodoStatus(todo.getTodoStatus());
         todoFromDb.setDescription(todo.getDescription());
         todoFromDb.setTitle(todo.getTitle());

@@ -24,7 +24,7 @@ public class Todo {
 	@Id
 	@GeneratedValue
 	@Column(updatable = false, nullable = false)
-	Integer id;
+	Long id;
 
 	@Column
 	String title;
@@ -42,11 +42,11 @@ public class Todo {
 	@UpdateTimestamp
 	Timestamp lastModified;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -90,7 +90,7 @@ public class Todo {
 		this.lastModified = lastModified;
 	}
 
-	public Todo(Integer id, String title, String description, TodoStatus todoStatus, Timestamp dateCreated,
+	public Todo(Long id, String title, String description, TodoStatus todoStatus, Timestamp dateCreated,
 			Timestamp lastModified) {
 		super();
 		this.id = id;

@@ -21,23 +21,17 @@ public class TodoLoader {
     
     @PostConstruct
     public void init(){
-    	System.out.println("************ inside init() Method got called");
     	loadTodos();
     }
 
     private void loadTodos() {
-    	System.out.println("************ Method got called");
         if (todoRepository.count() == 0) {
-        	System.out.println("************ inside Method got called");
-        	// Long id, String title, String description, TodoStatus todoStatus, Timestamp dateCreated,
-		
-			todoRepository.save(new Todo(1, "Title 1", "Description", TodoStatus.COMPLETED,
+			todoRepository.save(new Todo(1L, "Title 1", "Description", TodoStatus.COMPLETED,
 					new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-            todoRepository.save(new Todo(2, "Title 2", "Description", TodoStatus.COMPLETED,
+            todoRepository.save(new Todo(2L, "Title 2", "Description", TodoStatus.COMPLETED,
 					new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-            todoRepository.save(new Todo(3, "Title 3", "Description", TodoStatus.COMPLETED,
+            todoRepository.save(new Todo(3L, "Title 3", "Description", TodoStatus.COMPLETED,
 					new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-            System.out.println("Sample Todos Loaded");
         }
     }
 }
