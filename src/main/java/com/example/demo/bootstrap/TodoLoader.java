@@ -11,9 +11,12 @@ import com.example.demo.repositories.TodoRepository;
 
 import jakarta.annotation.PostConstruct;
 
+/**
+ * Component that loads sample todo data into the database on application startup.
+ */
 @Component
 public class TodoLoader {
-    public final TodoRepository todoRepository;
+    private final TodoRepository todoRepository;
 
     public TodoLoader(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;

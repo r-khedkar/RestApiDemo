@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.Todo;
 import com.example.demo.repositories.TodoRepository;
 
+/**
+ * Implementation of TodoService for managing todo operations.
+ */
 @Service
 public class TodoServiceImpl implements TodoService {
-    TodoRepository todoRepository;
+    private final TodoRepository todoRepository;
 
     public TodoServiceImpl(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
