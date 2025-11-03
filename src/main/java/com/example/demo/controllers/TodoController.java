@@ -16,33 +16,48 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.Todo;
 import com.example.demo.services.TodoService;
 
+/**
+ * REST controller for managing Todo items.
+ * Provides endpoints for CRUD operations on todos.
+ */
 @RestController
 @RequestMapping("/api/v1/todo")
 public class TodoController {
-	TodoService todoService;
+	private final TodoService todoService;
 
 	public TodoController(TodoService todoService) {
 		this.todoService = todoService;
 	}
 
-	// The function receives a GET request, processes it and gives back a list of
-	// Todo as a response.
+	/**
+	 * Retrieves all todos.
+	 * 
+	 * @return ResponseEntity containing a list of all todos
+	 */
 	@GetMapping
 	public ResponseEntity<List<Todo>> getAllTodos() {
 		List<Todo> todos = todoService.getTodos();
 		return new ResponseEntity<>(todos, HttpStatus.OK);
 	}
 
-	// The function receives a GET request, processes it, and gives back a list of
-	// Todo as a response.
+	/**
+	 * Retrieves a specific todo by its ID.
+	 * 
+	 * @param todoId the ID of the todo to retrieve
+	 * @return ResponseEntity containing the todo
+	 */
 	@GetMapping({ "/{todoId}" })
 	public ResponseEntity<Todo> getTodo(@PathVariable Long todoId) {
 		return new ResponseEntity<>(todoService.getTodoById(todoId), HttpStatus.OK);
 	}
 
-	// The function receives a POST request, processes it, creates a new Todo and
-	// saves it to the database, and returns a resource link to the created todo.
-	// @PostMapping
+	/**
+	 * Creates a new todo.
+	 * 
+	 * @param todo the todo to create
+	 * @return ResponseEntity containing the created todo with location header
+	 */
+	@org.springframework.web.bind.annotation.PostMapping
 	public ResponseEntity<Todo> saveTodo(@RequestBody Todo todo) {
 		Todo todo1 = todoService.insert(todo);
 		HttpHeaders httpHeaders = new HttpHeaders();
@@ -50,16 +65,25 @@ public class TodoController {
 		return new ResponseEntity<>(todo1, httpHeaders, HttpStatus.CREATED);
 	}
 
-	// The function receives a PUT request, updates the Todo with the specified Id
-	// and returns the updated Todo
+	/**
+	 * Updates an existing todo.
+	 * 
+	 * @param todoId the ID of the todo to update
+	 * @param todo the updated todo data
+	 * @return ResponseEntity containing the updated todo
+	 */
 	@PutMapping({ "/{todoId}" })
 	public ResponseEntity<Todo> updateTodo(@PathVariable("todoId") Long todoId, @RequestBody Todo todo) {
 		todoService.updateTodo(todoId, todo);
 		return new ResponseEntity<>(todoService.getTodoById(todoId), HttpStatus.OK);
 	}
 
-	// The function receives a DELETE request, deletes the Todo with the specified
-	// Id.
+	/**
+	 * Deletes a todo by its ID.
+	 * 
+	 * @param todoId the ID of the todo to delete
+	 * @return ResponseEntity with NO_CONTENT status
+	 */
 	@DeleteMapping({ "/{todoId}" })
 	public ResponseEntity<Todo> deleteTodo(@PathVariable("todoId") Long todoId) {
 		todoService.deleteTodo(todoId);
