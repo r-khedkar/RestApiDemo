@@ -1,0 +1,153 @@
+.currency-container {
+  min-height: calc(100vh - 70px);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.converter-card {
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: none;
+  animation: slideUp 0.6s ease-out;
+  background: white;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-control, .form-select {
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #11998e;
+  box-shadow: 0 0 0 0.2rem rgba(17, 153, 142, 0.25);
+}
+
+.currency-card {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  animation: fadeIn 0.6s ease-out;
+  background: white;
+}
+
+.currency-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.currency-flag {
+  font-size: 3rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.currency-code {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #11998e;
+  margin-bottom: 0.5rem;
+}
+
+.currency-name {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.rate-badge {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.rate-badge .symbol {
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+}
+
+.rate-badge .rate {
+  font-size: 1.25rem;
+}
+
+.conversion-result {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.converted-amount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #11998e;
+  margin-top: 0.5rem;
+}
+
+.info-card {
+  border-radius: 15px;
+  border: none;
+  background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+  animation: fadeIn 1s ease-out;
+}
+
+.info-card .card-title {
+  color: #11998e;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .display-4 {
+    font-size: 2rem;
+  }
+
+  .currency-flag {
+    font-size: 2rem;
+  }
+
+  .currency-code {
+    font-size: 1.5rem;
+  }
+
+  .converted-amount {
+    font-size: 1.25rem;
+  }
+}

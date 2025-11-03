@@ -1,0 +1,81 @@
+<app-navbar></app-navbar>
+
+<div class="currency-container">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="header-section text-center mb-5">
+          <h1 class="display-4 fw-bold gradient-text">
+            <i class="bi bi-currency-exchange me-3"></i>
+            Currency Exchange
+          </h1>
+          <p class="lead text-muted">Real-time currency conversion rates</p>
+        </div>
+
+        <div class="converter-card card mb-5">
+          <div class="card-body p-4">
+            <h4 class="card-title mb-4">
+              <i class="bi bi-calculator me-2"></i>
+              Quick Converter
+            </h4>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Amount (USD)</label>
+                <input 
+                  type="number" 
+                  class="form-control form-control-lg" 
+                  [(ngModel)]="amount"
+                  [ngModelOptions]="{standalone: true}"
+                  min="0"
+                  step="0.01"
+                  placeholder="Enter amount"
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">From Currency</label>
+                <select class="form-select form-select-lg" [(ngModel)]="selectedCurrency" [ngModelOptions]="{standalone: true}">
+                  <option value="USD">USD - US Dollar</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3" *ngFor="let currency of currencies">
+            <div class="currency-card card h-100">
+              <div class="card-body text-center">
+                <div class="currency-flag mb-3">{{ currency.flag }}</div>
+                <h3 class="currency-code">{{ currency.code }}</h3>
+                <p class="currency-name text-muted mb-3">{{ currency.name }}</p>
+                <div class="rate-badge">
+                  <span class="symbol">{{ currency.symbol }}</span>
+                  <span class="rate">{{ currency.rate | number:'1.2-2' }}</span>
+                </div>
+                <div class="conversion-result mt-3">
+                  <small class="text-muted">{{ amount }} USD =</small>
+                  <div class="converted-amount">
+                    {{ currency.symbol }}{{ convert(currency.rate) | number:'1.2-2' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card card mt-5">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="bi bi-info-circle me-2"></i>
+              About Exchange Rates
+            </h5>
+            <p class="card-text mb-0">
+              Exchange rates are updated regularly and may vary. These rates are for demonstration purposes only.
+              Always verify current rates with your financial institution before making transactions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

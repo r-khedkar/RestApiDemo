@@ -1,0 +1,152 @@
+<div class="signup-container">
+  <div class="card signup-card">
+    <div class="card-body p-5">
+      <div class="text-center mb-4">
+        <h2 class="card-title fw-bold">Create Account</h2>
+        <p class="text-muted">Sign up to get started</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full Name</label>
+          <input
+            type="text"
+            class="form-control form-control-lg"
+            id="fullName"
+            [(ngModel)]="fullName"
+            name="fullName"
+            required
+            placeholder="Enter your full name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control form-control-lg"
+            id="username"
+            [(ngModel)]="username"
+            name="username"
+            required
+            placeholder="Choose a username"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control form-control-lg"
+            id="email"
+            [(ngModel)]="email"
+            name="email"
+            required
+            email
+            placeholder="Enter your email"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control form-control-lg"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="6"
+            placeholder="Create a password"
+          />
+          <div *ngIf="password.length > 0" class="password-strength mt-2">
+            <div class="strength-bar">
+              <div 
+                class="strength-fill" 
+                [style.width]="password.length < 6 ? '33%' : password.length < 10 ? '66%' : '100%'"
+                [style.background-color]="getPasswordStrengthColor()"
+              ></div>
+            </div>
+            <small class="text-muted">
+              Password strength: 
+              <span [style.color]="getPasswordStrengthColor()" class="fw-bold">
+                {{ getPasswordStrength() | uppercase }}
+              </span>
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            class="form-control form-control-lg"
+            id="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            required
+            placeholder="Confirm your password"
+          />
+        </div>
+
+        <div class="mb-4">
+          <div class="form-check">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              id="agreeTerms"
+              [(ngModel)]="agreeTerms"
+              name="agreeTerms"
+              required
+            >
+            <label class="form-check-label" for="agreeTerms">
+              I agree to the <a href="#" class="text-decoration-none">Terms & Conditions</a>
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ errorMessage }}
+          <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ successMessage }}
+          <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg w-100 mb-3"
+          [disabled]="!signupForm.valid || isLoading"
+        >
+          <span *ngIf="!isLoading">Create Account</span>
+          <span *ngIf="isLoading">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Creating account...
+          </span>
+        </button>
+      </form>
+
+      <div class="text-center mt-4">
+        <p class="mb-0">
+          Already have an account? 
+          <a routerLink="/login" class="text-decoration-none fw-bold">Sign In</a>
+        </p>
+      </div>
+
+      <div class="divider my-4">
+        <span class="divider-text">OR</span>
+      </div>
+
+      <div class="social-signup">
+        <button class="btn btn-outline-secondary btn-lg w-100 mb-2">
+          <i class="bi bi-google me-2"></i> Sign up with Google
+        </button>
+        <button class="btn btn-outline-secondary btn-lg w-100">
+          <i class="bi bi-github me-2"></i> Sign up with GitHub
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
