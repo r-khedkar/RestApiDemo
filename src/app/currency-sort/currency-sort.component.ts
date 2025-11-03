@@ -10,7 +10,6 @@ interface CurrencyData {
   rate: number;
   flag: string;
   closingTime: string;
-  closingTimeSort: number;
   change: number;
   marketStatus: 'open' | 'closed';
 }
@@ -31,7 +30,6 @@ export class CurrencySortComponent implements OnInit {
       rate: 1.00, 
       flag: '🇺🇸',
       closingTime: '5:00 PM EST',
-      closingTimeSort: 17,
       change: 0.00,
       marketStatus: 'open'
     },
@@ -42,7 +40,6 @@ export class CurrencySortComponent implements OnInit {
       rate: 0.92, 
       flag: '🇪🇺',
       closingTime: '11:30 AM EST',
-      closingTimeSort: 11.5,
       change: -0.23,
       marketStatus: 'closed'
     },
@@ -53,7 +50,6 @@ export class CurrencySortComponent implements OnInit {
       rate: 0.79, 
       flag: '🇬🇧',
       closingTime: '12:00 PM EST',
-      closingTimeSort: 12,
       change: 0.45,
       marketStatus: 'closed'
     },
@@ -64,7 +60,6 @@ export class CurrencySortComponent implements OnInit {
       rate: 149.50, 
       flag: '🇯🇵',
       closingTime: '2:00 AM EST',
-      closingTimeSort: 2,
       change: 1.20,
       marketStatus: 'closed'
     },
@@ -75,7 +70,6 @@ export class CurrencySortComponent implements OnInit {
       rate: 83.12, 
       flag: '🇮🇳',
       closingTime: '6:30 AM EST',
-      closingTimeSort: 6.5,
       change: 0.15,
       marketStatus: 'closed'
     },
@@ -86,7 +80,6 @@ export class CurrencySortComponent implements OnInit {
       rate: 1.53, 
       flag: '🇦🇺',
       closingTime: '1:00 AM EST',
-      closingTimeSort: 1,
       change: -0.08,
       marketStatus: 'closed'
     },
@@ -97,7 +90,6 @@ export class CurrencySortComponent implements OnInit {
       rate: 1.38, 
       flag: '🇨🇦',
       closingTime: '5:00 PM EST',
-      closingTimeSort: 17,
       change: 0.32,
       marketStatus: 'open'
     },
@@ -108,7 +100,6 @@ export class CurrencySortComponent implements OnInit {
       rate: 0.88, 
       flag: '🇨🇭',
       closingTime: '11:00 AM EST',
-      closingTimeSort: 11,
       change: -0.12,
       marketStatus: 'closed'
     }
@@ -128,13 +119,38 @@ export class CurrencySortComponent implements OnInit {
     this.sortCurrencies('asc');
   }
 
+  /**
+   * Parse time string like "5:00 PM EST" or "11:30 AM EST" to 24-hour format number
+   */
+  parseTimeToNumber(timeStr: string): number {
+    const timePart = timeStr.split(' ')[0]; // Get "5:00" or "11:30"
+    const period = timeStr.includes('PM') ? 'PM' : 'AM';
+    
+    const [hourStr, minuteStr] = timePart.split(':');
+    let hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr, 10);
+    
+    // Convert to 24-hour format
+    if (period === 'PM' && hour !== 12) {
+      hour += 12;
+    } else if (period === 'AM' && hour === 12) {
+      hour = 0;
+    }
+    
+    // Return as decimal number (e.g., 17.5 for 5:30 PM)
+    return hour + (minute / 60);
+  }
+
   sortCurrencies(order: 'asc' | 'desc'): void {
     this.currentSortOrder = order;
     this.sortedCurrencies = [...this.currencies].sort((a, b) => {
+      const timeA = this.parseTimeToNumber(a.closingTime);
+      const timeB = this.parseTimeToNumber(b.closingTime);
+      
       if (order === 'asc') {
-        return a.closingTimeSort - b.closingTimeSort;
+        return timeA - timeB;
       } else {
-        return b.closingTimeSort - a.closingTimeSort;
+        return timeB - timeA;
       }
     });
   }
