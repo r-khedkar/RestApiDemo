@@ -267,3 +267,98 @@
     </div>
   </div>
 </div>
+
+<!-- Review Modal -->
+<div class="modal-backdrop" *ngIf="showReviewModal" (click)="closeModal()"></div>
+<div class="modal-dialog-wrapper" *ngIf="showReviewModal">
+  <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <i class="bi bi-clipboard-check me-2"></i>
+          Review Your Order
+        </h4>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info mb-4">
+          <i class="bi bi-info-circle me-2"></i>
+          Please review the selected currencies before submitting to the backend.
+        </div>
+
+        <!-- Selected Currencies List -->
+        <div class="review-list">
+          <div *ngFor="let item of getSelectedCurrenciesArray(); let i = index" class="review-item">
+            <div class="review-item-header">
+              <span class="review-number">{{ i + 1 }}</span>
+              <span class="currency-flag-review me-2">{{ item.currency.flag }}</span>
+              <strong class="fs-5">{{ item.currency.code }}</strong>
+              <span class="text-muted ms-2">{{ item.currency.name }}</span>
+            </div>
+            <div class="review-item-details">
+              <div class="detail-row">
+                <span class="detail-label">
+                  <i class="bi bi-calculator me-1"></i>
+                  Quantity:
+                </span>
+                <span class="detail-value">{{ item.count }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">
+                  <i class="bi bi-currency-exchange me-1"></i>
+                  Rate:
+                </span>
+                <span class="detail-value">{{ item.currency.symbol }}{{ item.currency.rate | number:'1.2-4' }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">
+                  <i class="bi bi-cash-stack me-1"></i>
+                  Total Value:
+                </span>
+                <span class="detail-value fw-bold text-success">
+                  {{ item.currency.symbol }}{{ (item.currency.rate * item.count) | number:'1.2-2' }}
+                </span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">
+                  <i class="bi bi-clock me-1"></i>
+                  Closing Time:
+                </span>
+                <span class="detail-value">{{ item.currency.closingTime }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="review-summary mt-4">
+          <div class="summary-row">
+            <span class="summary-label">Total Currencies Selected:</span>
+            <span class="summary-value">{{ selectedCurrencies.size }}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Total Items:</span>
+            <span class="summary-value">{{ getTotalItems() }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-lg" (click)="closeModal()">
+          <i class="bi bi-x-circle me-2"></i>
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary btn-lg" (click)="confirmSubmit()" [disabled]="isSending">
+          <span *ngIf="!isSending">
+            <i class="bi bi-check-circle me-2"></i>
+            Confirm & Submit
+          </span>
+          <span *ngIf="isSending">
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            Submitting...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

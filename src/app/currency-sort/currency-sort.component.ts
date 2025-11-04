@@ -112,6 +112,7 @@ export class CurrencySortComponent implements OnInit {
   isSending: boolean = false;
   sendSuccess: boolean = false;
   sendError: string = '';
+  showReviewModal: boolean = false;
 
   constructor() { }
 
@@ -219,6 +220,27 @@ export class CurrencySortComponent implements OnInit {
       return;
     }
 
+    // Show review modal instead of sending directly
+    this.showReviewModal = true;
+  }
+
+  closeModal(): void {
+    this.showReviewModal = false;
+  }
+
+  confirmSubmit(): void {
+    // Ask for final confirmation
+    const confirmed = confirm(
+      `Are you sure you want to submit ${this.selectedCurrencies.size} ${this.selectedCurrencies.size === 1 ? 'currency' : 'currencies'} ` +
+      `with a total of ${this.getTotalItems()} items to the backend?\n\n` +
+      `This action cannot be undone.`
+    );
+
+    if (!confirmed) {
+      return; // User cancelled, keep modal open
+    }
+
+    this.showReviewModal = false;
     this.isSending = true;
     this.sendSuccess = false;
     this.sendError = '';
@@ -262,5 +284,9 @@ export class CurrencySortComponent implements OnInit {
         this.sendSuccess = false;
       }, 3000);
     }, 1000);
+  }
+
+  getSelectedCurrenciesArray() {
+    return Array.from(this.selectedCurrencies.values());
   }
 }
