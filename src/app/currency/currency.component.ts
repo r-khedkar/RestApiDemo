@@ -2,15 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { Currency } from '../models/currency.model';
+import { CurrencyService } from '../services/currency.service';
 
-interface Currency {
-  code: string;
-  name: string;
-  symbol: string;
-  rate: number;
-  flag: string;
-}
-
+/**
+ * Currency converter component with exchange rate display
+ */
 @Component({
   selector: 'app-currency',
   standalone: true,
@@ -19,24 +16,19 @@ interface Currency {
   styleUrls: ['./currency.component.css']
 })
 export class CurrencyComponent implements OnInit {
-  currencies: Currency[] = [
-    { code: 'USD', name: 'US Dollar', symbol: '$', rate: 1.00, flag: '🇺🇸' },
-    { code: 'EUR', name: 'Euro', symbol: '€', rate: 0.92, flag: '🇪🇺' },
-    { code: 'GBP', name: 'British Pound', symbol: '£', rate: 0.79, flag: '🇬🇧' },
-    { code: 'JPY', name: 'Japanese Yen', symbol: '¥', rate: 149.50, flag: '🇯🇵' },
-    { code: 'INR', name: 'Indian Rupee', symbol: '₹', rate: 83.12, flag: '🇮🇳' },
-    { code: 'AUD', name: 'Australian Dollar', symbol: 'A$', rate: 1.53, flag: '🇦🇺' },
-    { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$', rate: 1.38, flag: '🇨🇦' },
-    { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF', rate: 0.88, flag: '🇨🇭' }
-  ];
-
+  currencies: Currency[] = [];
   amount: number = 100;
   selectedCurrency: string = 'USD';
 
-  constructor() { }
+  constructor(private currencyService: CurrencyService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.currencies = this.currencyService.getAllCurrencies();
+  }
 
+  /**
+   * Convert amount to target currency
+   */
   convert(rate: number): number {
     return this.amount * rate;
   }

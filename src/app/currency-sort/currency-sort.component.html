@@ -6,10 +6,10 @@
       <div class="col-12">
         <div class="header-section text-center mb-5">
           <h1 class="display-4 fw-bold gradient-text">
-            <i class="bi bi-clock-history me-3"></i>
-            Currency Market Times
+            <i class="bi bi-currency-exchange me-3"></i>
+            Currency Selection
           </h1>
-          <p class="lead text-muted">View currencies sorted by closing time</p>
+          <p class="lead text-muted">Select and manage your currency portfolio</p>
         </div>
 
         <!-- Sort Controls -->
@@ -19,7 +19,7 @@
               <i class="bi bi-sort-down me-2"></i>
               Sort by Closing Time
             </h5>
-            <div class="btn-group" role="group">
+            <div class="btn-group mb-3" role="group">
               <button 
                 type="button" 
                 class="btn btn-sort"
@@ -37,6 +37,17 @@
               >
                 <i class="bi bi-sort-numeric-down-alt me-2"></i>
                 Descending (Latest First)
+              </button>
+            </div>
+            
+            <div class="mt-3">
+              <button 
+                type="button" 
+                class="btn btn-asian-default"
+                (click)="selectDefaultAsianCurrencies()"
+              >
+                <i class="bi bi-globe-asia-australia me-2"></i>
+                Select Default Asian Currencies
               </button>
             </div>
           </div>

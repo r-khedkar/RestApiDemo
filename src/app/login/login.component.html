@@ -8,16 +8,19 @@
 
       <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
         <div class="mb-3">
-          <label for="email" class="form-label">Email or Username</label>
+          <label for="emailOrUsername" class="form-label">Email or Username</label>
           <input
             type="text"
             class="form-control form-control-lg"
-            id="email"
-            [(ngModel)]="email"
-            name="email"
+            id="emailOrUsername"
+            [(ngModel)]="credentials.emailOrUsername"
+            name="emailOrUsername"
             required
             placeholder="Enter your email or username"
           />
+          <div class="text-danger mt-1" *ngIf="errors['emailOrUsername']">
+            {{ errors['emailOrUsername'] }}
+          </div>
         </div>
 
         <div class="mb-3">
@@ -26,11 +29,14 @@
             type="password"
             class="form-control form-control-lg"
             id="password"
-            [(ngModel)]="password"
+            [(ngModel)]="credentials.password"
             name="password"
             required
             placeholder="Enter your password"
           />
+          <div class="text-danger mt-1" *ngIf="errors['password']">
+            {{ errors['password'] }}
+          </div>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4">

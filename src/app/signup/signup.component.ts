@@ -3,7 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ValidationService } from '../utils/validation.service';
+import { SignupData, PasswordStrength } from '../models/user.model';
 
+/**
+ * Signup component handling user registration
+ */
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -12,48 +17,49 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-  fullName: string = '';
-  username: string = '';
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
+  signupData: SignupData = {
+    fullName: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    agreeTerms: false
+  };
+
+  errors: Record<string, string> = {};
   errorMessage: string = '';
   successMessage: string = '';
   isLoading: boolean = false;
-  agreeTerms: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private validationService: ValidationService,
+    private router: Router
+  ) {}
 
+  /**
+   * Handle signup form submission
+   */
   onSubmit(): void {
     this.errorMessage = '';
     this.successMessage = '';
+    this.errors = {};
 
-    // Validation
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Passwords do not match!';
-      return;
-    }
-
-    if (this.password.length < 6) {
-      this.errorMessage = 'Password must be at least 6 characters long!';
-      return;
-    }
-
-    if (!this.agreeTerms) {
-      this.errorMessage = 'Please agree to the terms and conditions!';
+    // Validate using validation service
+    const validationErrors = this.validationService.validateSignupForm(this.signupData);
+    
+    if (validationErrors.length > 0) {
+      // Convert array of ValidationError to Record<string, string>
+      validationErrors.forEach(error => {
+        this.errors[error.field] = error.message;
+      });
       return;
     }
 
     this.isLoading = true;
 
-    // Simulate a slight delay for better UX
     setTimeout(() => {
-      const result = this.authService.signup({
-        fullName: this.fullName,
-        username: this.username,
-        email: this.email,
-        password: this.password
-      });
+      const result = this.authService.signup(this.signupData);
 
       if (result.success) {
         this.successMessage = result.message;
@@ -68,14 +74,17 @@ export class SignupComponent {
     }, 500);
   }
 
-  getPasswordStrength(): string {
-    const password = this.password;
-    if (password.length === 0) return '';
-    if (password.length < 6) return 'weak';
-    if (password.length < 10) return 'medium';
-    return 'strong';
+  /**
+   * Get password strength level
+   */
+  getPasswordStrength(): PasswordStrength | '' {
+    if (!this.signupData.password) return '';
+    return this.validationService.getPasswordStrength(this.signupData.password);
   }
 
+  /**
+   * Get color class for password strength indicator
+   */
   getPasswordStrengthColor(): string {
     const strength = this.getPasswordStrength();
     if (strength === 'weak') return '#dc3545';

@@ -1,102 +1,159 @@
 import { Injectable } from '@angular/core';
+import { User, SafeUser, AuthResponse, SignupData } from '../models/user.model';
+import { MOCK_USERS, STORAGE_KEYS, AUTH_MESSAGES } from '../constants/user.constants';
 
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  password: string;
-  fullName: string;
-}
-
+/**
+ * Authentication service handling user login, signup, and session management
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private mockUsers: User[] = [
-    {
-      id: 1,
-      username: 'john_doe',
-      email: 'john@example.com',
-      password: 'password123',
-      fullName: 'John Doe'
-    },
-    {
-      id: 2,
-      username: 'jane_smith',
-      email: 'jane@example.com',
-      password: 'password456',
-      fullName: 'Jane Smith'
-    },
-    {
-      id: 3,
-      username: 'admin',
-      email: 'admin@example.com',
-      password: 'admin123',
-      fullName: 'Admin User'
-    }
-  ];
-
+  private mockUsers: User[] = [...MOCK_USERS];
   private currentUser: User | null = null;
 
-  constructor() { }
+  constructor() {
+    this.loadCurrentUser();
+  }
 
-  login(emailOrUsername: string, password: string): { success: boolean; message: string; user?: User } {
+  /**
+   * Load current user from localStorage on service initialization
+   */
+  private loadCurrentUser(): void {
+    const storedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+    if (storedUser) {
+      try {
+        this.currentUser = JSON.parse(storedUser);
+      } catch (error) {
+        console.error('Failed to parse stored user:', error);
+        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+      }
+    }
+  }
+
+  /**
+   * Authenticate user with email/username and password
+   */
+  login(emailOrUsername: string, password: string): AuthResponse {
     const user = this.mockUsers.find(
       u => (u.email === emailOrUsername || u.username === emailOrUsername) && u.password === password
     );
 
     if (user) {
+      user.lastLogin = new Date();
       this.currentUser = user;
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      return { success: true, message: 'Login successful!', user };
+      localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+      
+      return {
+        success: true,
+        message: AUTH_MESSAGES.LOGIN_SUCCESS,
+        user: user
+      };
     }
 
-    return { success: false, message: 'Invalid credentials. Please try again.' };
+    return {
+      success: false,
+      message: AUTH_MESSAGES.LOGIN_FAILED
+    };
   }
 
-  signup(userData: { username: string; email: string; password: string; fullName: string }): { success: boolean; message: string } {
-    // Check if user already exists
+  /**
+   * Register a new user
+   */
+  signup(signupData: SignupData): AuthResponse {
     const existingUser = this.mockUsers.find(
-      u => u.email === userData.email || u.username === userData.username
+      u => u.email === signupData.email || u.username === signupData.username
     );
 
     if (existingUser) {
-      return { success: false, message: 'User with this email or username already exists.' };
+      return {
+        success: false,
+        message: AUTH_MESSAGES.USER_EXISTS
+      };
     }
 
-    // Create new user
     const newUser: User = {
       id: this.mockUsers.length + 1,
-      ...userData
+      username: signupData.username,
+      email: signupData.email,
+      password: signupData.password,
+      fullName: signupData.fullName,
+      createdAt: new Date(),
+      lastLogin: new Date()
     };
 
     this.mockUsers.push(newUser);
-    this.currentUser = newUser;
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
 
-    return { success: true, message: 'Account created successfully!' };
+    return {
+      success: true,
+      message: AUTH_MESSAGES.SIGNUP_SUCCESS,
+      user: newUser
+    };
   }
 
+  /**
+   * Log out current user
+   */
   logout(): void {
     this.currentUser = null;
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+    localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
   }
 
+  /**
+   * Get current authenticated user
+   */
   getCurrentUser(): User | null {
-    if (this.currentUser) {
-      return this.currentUser;
-    }
-
-    const stored = localStorage.getItem('currentUser');
-    if (stored) {
-      this.currentUser = JSON.parse(stored);
-      return this.currentUser;
-    }
-
-    return null;
+    return this.currentUser;
   }
 
+  /**
+   * Get current user without sensitive information
+   */
+  getSafeCurrentUser(): SafeUser | null {
+    if (!this.currentUser) return null;
+    
+    const { password, ...safeUser } = this.currentUser;
+    return safeUser;
+  }
+
+  /**
+   * Check if user is authenticated
+   */
+  isAuthenticated(): boolean {
+    return this.currentUser !== null;
+  }
+
+  /**
+   * Backward compatibility method
+   */
   isLoggedIn(): boolean {
-    return this.getCurrentUser() !== null;
+    return this.isAuthenticated();
+  }
+
+  /**
+   * Get all users (excluding passwords)
+   */
+  getAllUsers(): SafeUser[] {
+    return this.mockUsers.map(({ password, ...user }) => user);
+  }
+
+  /**
+   * Search users by name, username, or email
+   */
+  searchUsers(searchTerm: string): SafeUser[] {
+    const term = searchTerm.toLowerCase().trim();
+    
+    if (!term) {
+      return this.getAllUsers();
+    }
+    
+    return this.mockUsers
+      .filter(user => 
+        user.fullName.toLowerCase().includes(term) ||
+        user.username.toLowerCase().includes(term) ||
+        user.email.toLowerCase().includes(term)
+      )
+      .map(({ password, ...user }) => user);
   }
 }
