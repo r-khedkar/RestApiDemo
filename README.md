@@ -5,7 +5,8 @@ Rest API Demo Application - A Spring Boot REST API for managing Todo items
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
 - [How to Use in Eclipse IDE](#how-to-use-in-eclipse-ide)
-  - [Import Project](#import-project)
+  - [Create New Maven Project from Scratch](#create-new-maven-project-from-scratch)
+  - [Import Existing Project](#import-existing-project)
   - [Configure and Run](#configure-and-run)
   - [Testing the API](#testing-the-api)
 - [Troubleshooting](#troubleshooting)
@@ -31,7 +32,173 @@ Before using this project in Eclipse, ensure you have the following installed:
 
 ## How to Use in Eclipse IDE
 
-### Import Project
+### Create New Maven Project from Scratch
+
+If you want to create a brand new Java Maven project in Eclipse (not import this existing project), follow these simple steps:
+
+#### Step 1: Open Eclipse and Start Creating a New Project
+
+1. **Launch Eclipse IDE**
+   - Open Eclipse on your computer
+   - Wait for it to fully load (you'll see the main Eclipse window)
+
+2. **Start the New Project Wizard**
+   - Look at the top menu bar
+   - Click on `File` (top-left corner)
+   - Move your mouse down to `New`
+   - A side menu will appear
+   - Click on `Project...` (it has a folder icon)
+
+#### Step 2: Choose Maven Project Type
+
+3. **Select Maven Project**
+   - A window titled "New Project" will pop up
+   - You'll see a list of project types
+   - Look for a folder icon labeled `Maven`
+   - Click the small arrow/triangle next to `Maven` to expand it
+   - You'll see `Maven Project` appear underneath
+   - Click on `Maven Project` to select it
+   - Click the `Next` button at the bottom
+
+#### Step 3: Configure Project Location
+
+4. **Choose Where to Save Your Project**
+   - You'll see a screen asking about project location
+   - There's a checkbox that says "Create a simple project (skip archetype selection)"
+   - **Leave this UNCHECKED** for now (we'll use an archetype)
+   - There's another checkbox "Use default Workspace location"
+   - **Keep this CHECKED** (this saves your project in Eclipse's default folder)
+   - Click `Next` button
+
+#### Step 4: Select a Project Template (Archetype)
+
+5. **Choose a Maven Archetype (Template)**
+   - You'll see a long list of templates (called "archetypes")
+   - Don't worry! You just need to find the right one
+   - In the search box at the top, type: `maven-archetype-quickstart`
+   - The list will filter to show only matching items
+   - Look for the one that says:
+     - **Artifact Id:** `maven-archetype-quickstart`
+     - **Group Id:** `org.apache.maven.archetypes`
+   - Click on it to select it
+   - Click `Next` button
+
+#### Step 5: Fill in Your Project Details
+
+6. **Enter Your Project Information** (like filling out a form)
+   
+   You'll see several text boxes. Here's what to put in each:
+
+   - **Group Id:** 
+     - Think of this as your company or organization name
+     - Use reverse domain style, like: `com.mycompany` or `com.example`
+     - Example: `com.example`
+     - This helps organize projects uniquely
+
+   - **Artifact Id:**
+     - This is your project name
+     - Use lowercase with hyphens, like: `my-first-project`
+     - Example: `todo-app` or `rest-api-demo`
+     - This becomes your project folder name
+
+   - **Version:**
+     - Leave as `0.0.1-SNAPSHOT` (default is fine)
+     - This is your project version number
+     - SNAPSHOT means it's still in development
+
+   - **Package:**
+     - This is automatically filled based on Group Id and Artifact Id
+     - It looks like: `com.example.myproject`
+     - This is where your Java code will live
+     - You can leave it as-is or modify it if needed
+
+7. **Review and Create**
+   - Double-check all the information you entered
+   - When everything looks good, click `Finish`
+
+#### Step 6: Wait for Project Creation
+
+8. **Eclipse Will Set Up Your Project**
+   - Eclipse will create your project structure
+   - It will download Maven dependencies (this takes a moment)
+   - You'll see a progress bar at the bottom-right
+   - Wait until it says "Build completed" or finishes loading
+   - This might take 1-2 minutes the first time
+
+#### Step 7: Explore Your New Project
+
+9. **Check Your New Project Structure**
+   
+   In the left panel (Package Explorer), you'll see your new project with this structure:
+   
+   ```
+   your-project-name
+   ├── src
+   │   ├── main
+   │   │   └── java
+   │   │       └── com.example.myproject
+   │   │           └── App.java (sample Java file)
+   │   └── test
+   │       └── java
+   │           └── com.example.myproject
+   │               └── AppTest.java (sample test file)
+   ├── JRE System Library
+   ├── Maven Dependencies
+   ├── src
+   ├── target (compiled files go here)
+   └── pom.xml (Maven configuration file)
+   ```
+
+   **What each folder means:**
+   - `src/main/java` - Write your Java code here
+   - `src/test/java` - Write your test code here
+   - `pom.xml` - Maven configuration (like a recipe for your project)
+   - `Maven Dependencies` - All the libraries your project uses
+
+#### Step 8: Run Your First Program
+
+10. **Run the Sample App**
+    - Expand your project in Package Explorer
+    - Navigate to: `src/main/java` → `com.example.myproject` (or your package name)
+    - Double-click on `App.java` to open it
+    - You'll see some Java code that says "Hello World!"
+    - Right-click anywhere in the `App.java` file
+    - Select `Run As` → `Java Application`
+    - Look at the bottom panel called "Console"
+    - You should see: `Hello World!` printed there
+    - Congratulations! Your project works! 🎉
+
+#### Next Steps: Adding Spring Boot (Optional)
+
+If you want to convert this into a Spring Boot project like this RestApiDemo:
+
+11. **Add Spring Boot to pom.xml**
+    - Open the `pom.xml` file (double-click it)
+    - You'll need to add Spring Boot dependencies
+    - This is more advanced - consider using Spring Initializr instead
+    - Go to: https://start.spring.io/
+    - Fill in the same Group Id and Artifact Id
+    - Select dependencies you need
+    - Click Generate to download a ready-made Spring Boot project
+
+#### Quick Recap (Simple Version)
+
+For beginners, here's the shortest version:
+
+1. `File` → `New` → `Project` → `Maven` → `Maven Project` → `Next`
+2. Leave defaults, click `Next`
+3. Search for `maven-archetype-quickstart`, select it, click `Next`
+4. Fill in:
+   - Group Id: `com.example`
+   - Artifact Id: `my-project`
+5. Click `Finish`
+6. Wait for Maven to download stuff
+7. Find `App.java` in `src/main/java`
+8. Right-click → `Run As` → `Java Application`
+9. See "Hello World!" in Console
+10. Start coding! ✨
+
+### Import Existing Project
 
 #### Method 1: Import Existing Maven Project (Recommended)
 
