@@ -34,7 +34,7 @@
             </div>
 
             <!-- AG Grid -->
-            <div class="ag-theme-alpine" style="width: 100%; min-height: 500px;">
+            <div class="ag-theme-alpine" style="width: 100%; height: 600px;">
               <ag-grid-angular
                 style="width: 100%; height: 100%;"
                 [columnDefs]="columnDefs"
@@ -42,7 +42,6 @@
                 [defaultColDef]="defaultColDef"
                 [pagination]="true"
                 [paginationPageSize]="10"
-                [domLayout]="'autoHeight'"
                 (gridReady)="onGridReady($event)"
                 (cellClicked)="onCellClicked($event)"
               ></ag-grid-angular>

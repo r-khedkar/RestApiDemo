@@ -98,13 +98,6 @@ export class UserListComponent implements OnInit {
     resizable: true
   };
 
-  // Grid options
-  gridOptions = {
-    pagination: true,
-    paginationPageSize: 10,
-    domLayout: 'autoHeight' as const
-  };
-
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
