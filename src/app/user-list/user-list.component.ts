@@ -5,8 +5,6 @@ import { AuthService } from '../services/auth.service';
 import { SafeUser } from '../models/user.model';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 /**
  * User list component displaying all registered users in AG Grid with edit/delete functionality
@@ -125,7 +123,7 @@ export class UserListComponent implements OnInit {
    */
   onGridReady(params: GridReadyEvent): void {
     this.gridApi = params.api;
-    this.gridApi.sizeColumnsToFit();
+    params.api.sizeColumnsToFit();
   }
 
   /**
@@ -172,8 +170,8 @@ export class UserListComponent implements OnInit {
           username: newUsername
         };
         
-        // Refresh grid
-        this.gridApi.setGridOption('rowData', this.users);
+        // Refresh grid by updating the users array (Angular change detection will update the grid)
+        this.users = [...this.users];
         
         alert(`User "${newFullName}" updated successfully!`);
       }
@@ -193,9 +191,6 @@ export class UserListComponent implements OnInit {
       // Remove from local data (simulated)
       this.users = this.users.filter(u => u.id !== userId);
       
-      // Refresh grid
-      this.gridApi.setGridOption('rowData', this.users);
-      
       alert(`User "${userData.fullName}" deleted successfully!`);
     }
   }
@@ -205,6 +200,8 @@ export class UserListComponent implements OnInit {
    */
   onQuickFilterChanged(event: Event): void {
     const searchValue = (event.target as HTMLInputElement).value;
-    this.gridApi.setGridOption('quickFilterText', searchValue);
+    if (this.gridApi) {
+      this.gridApi.setGridOption('quickFilterText', searchValue);
+    }
   }
 }
