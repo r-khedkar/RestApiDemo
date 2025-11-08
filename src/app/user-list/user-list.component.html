@@ -33,6 +33,14 @@
               </div>
             </div>
 
+            <!-- Debug: Show users data -->
+            <div class="alert alert-info mb-3" *ngIf="users && users.length > 0">
+              <strong>Debug:</strong> Loaded {{ users.length }} users
+              <ul>
+                <li *ngFor="let user of users">{{ user.fullName }} ({{ user.email }})</li>
+              </ul>
+            </div>
+
             <!-- AG Grid -->
             <div class="ag-theme-alpine" style="width: 100%; height: 600px;">
               <ag-grid-angular

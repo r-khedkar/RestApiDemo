@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { AuthService } from '../services/auth.service';
 import { SafeUser } from '../models/user.model';
+import { MOCK_USERS } from '../constants/user.constants';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 
@@ -108,7 +109,15 @@ export class UserListComponent implements OnInit {
    * Load all users from auth service
    */
   loadUsers(): void {
+    // Get users from auth service
     this.users = this.authService.getAllUsers();
+    
+    // If no users from service, use constants directly
+    if (!this.users || this.users.length === 0) {
+      this.users = MOCK_USERS.map(({ password, ...user }) => user);
+    }
+    
+    console.log('Loaded users:', this.users);
   }
 
   /**
@@ -116,6 +125,8 @@ export class UserListComponent implements OnInit {
    */
   onGridReady(params: GridReadyEvent): void {
     this.gridApi = params.api;
+    console.log('Grid ready. Row count:', params.api.getDisplayedRowCount());
+    console.log('Users data:', this.users);
     params.api.sizeColumnsToFit();
   }
 
