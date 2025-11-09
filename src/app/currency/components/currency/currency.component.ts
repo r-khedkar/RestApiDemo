@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { Currency } from '../models/currency.model';
-import { CurrencyService } from '../services/currency.service';
+import { NavbarComponent } from '../../../navbar/navbar.component';
+import { Currency } from '../../models/currency.model';
+import { CurrencyService } from '../../services/currency.service';
 
 /**
  * Currency converter component with exchange rate display

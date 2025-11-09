@@ -4,52 +4,49 @@
   <div class="container-fluid py-5 px-4">
     <div class="row">
       <div class="col-12">
-        <div class="header-section text-center mb-4">
-          <h1 class="display-4 fw-bold gradient-text">
+        <div class="header-section text-center mb-5">
+          <h1 class="display-3 fw-bold gradient-text">
             <i class="bi bi-people-fill me-3"></i>
-            User Directory
+            User Management
           </h1>
-          <p class="lead text-muted">Manage and view all registered users</p>
+          <p class="lead text-white">Comprehensive user directory with advanced grid controls</p>
         </div>
 
-        <div class="card shadow-sm mb-4">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="card shadow-lg mb-4">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
               <div>
-                <h5 class="mb-0">
+                <h5 class="mb-1">
                   <i class="bi bi-table me-2"></i>
-                  User Management Grid
+                  User Data Grid
                 </h5>
-                <small class="text-muted">{{ users.length }} total users</small>
+                <small class="text-muted">
+                  <i class="bi bi-people me-1"></i>
+                  {{ users.length }} total users registered
+                </small>
               </div>
-              <div class="search-box" style="width: 300px;">
+              <div class="search-box" style="width: 350px;">
                 <i class="bi bi-search search-icon"></i>
                 <input
                   type="text"
-                  class="form-control"
-                  placeholder="Quick search..."
+                  class="form-control form-control-lg"
+                  placeholder="Search users..."
                   (input)="onQuickFilterChanged($event)"
                 />
               </div>
             </div>
 
-            <!-- Debug: Show users data -->
-            <div class="alert alert-info mb-3" *ngIf="users && users.length > 0">
-              <strong>Debug:</strong> Loaded {{ users.length }} users
-              <ul>
-                <li *ngFor="let user of users">{{ user.fullName }} ({{ user.email }})</li>
-              </ul>
-            </div>
-
             <!-- AG Grid -->
-            <div class="ag-theme-alpine" style="width: 100%; height: 600px;">
+            <div style="width: 100%; height: 600px;">
               <ag-grid-angular
                 style="width: 100%; height: 100%;"
+                [theme]="theme"
                 [columnDefs]="columnDefs"
                 [rowData]="users"
                 [defaultColDef]="defaultColDef"
                 [pagination]="true"
                 [paginationPageSize]="10"
+                [paginationPageSizeSelector]="[10, 20, 50]"
                 (gridReady)="onGridReady($event)"
                 (cellClicked)="onCellClicked($event)"
               ></ag-grid-angular>

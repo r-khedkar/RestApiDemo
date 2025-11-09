@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { SafeUser } from '../models/user.model';
+import { AuthService } from '../user/services/auth.service';
+import { SafeUser } from '../user/models/user.model';
 
 /**
  * Navigation bar component with user menu and authentication controls

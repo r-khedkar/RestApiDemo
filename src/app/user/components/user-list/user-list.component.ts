@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { AuthService } from '../services/auth.service';
-import { SafeUser } from '../models/user.model';
-import { MOCK_USERS } from '../constants/user.constants';
+import { Router } from '@angular/router';
+import { NavbarComponent } from '../../../navbar/navbar.component';
+import { AuthService } from '../../services/auth.service';
+import { SafeUser } from '../../models/user.model';
+import { MOCK_USERS } from '../../constants/user.constants';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { ColDef, GridApi, GridReadyEvent, themeQuartz } from 'ag-grid-community';
 
 /**
  * User list component displaying all registered users in AG Grid with edit/delete functionality
@@ -20,6 +21,9 @@ import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 export class UserListComponent implements OnInit {
   users: SafeUser[] = [];
   private gridApi!: GridApi;
+
+  // AG Grid theme
+  theme = themeQuartz;
 
   // AG Grid column definitions
   columnDefs: ColDef[] = [
@@ -99,7 +103,10 @@ export class UserListComponent implements OnInit {
     resizable: true
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -116,8 +123,6 @@ export class UserListComponent implements OnInit {
     if (!this.users || this.users.length === 0) {
       this.users = MOCK_USERS.map(({ password, ...user }) => user);
     }
-    
-    console.log('Loaded users:', this.users);
   }
 
   /**
@@ -125,8 +130,6 @@ export class UserListComponent implements OnInit {
    */
   onGridReady(params: GridReadyEvent): void {
     this.gridApi = params.api;
-    console.log('Grid ready. Row count:', params.api.getDisplayedRowCount());
-    console.log('Users data:', this.users);
     params.api.sizeColumnsToFit();
   }
 
@@ -147,56 +150,17 @@ export class UserListComponent implements OnInit {
   }
 
   /**
-   * Edit user functionality
+   * Edit user functionality - Navigate to edit page
    */
   editUser(userId: number, userData: SafeUser): void {
-    // Create edit form with current values
-    const newFullName = prompt('Edit Full Name:', userData.fullName);
-    const newEmail = prompt('Edit Email:', userData.email);
-    const newUsername = prompt('Edit Username:', userData.username);
-
-    if (newFullName && newEmail && newUsername) {
-      // In a real app, this would call an API
-      console.log('Editing user:', {
-        id: userId,
-        fullName: newFullName,
-        email: newEmail,
-        username: newUsername
-      });
-
-      // Update local data (simulated)
-      const index = this.users.findIndex(u => u.id === userId);
-      if (index !== -1) {
-        this.users[index] = {
-          ...this.users[index],
-          fullName: newFullName,
-          email: newEmail,
-          username: newUsername
-        };
-        
-        // Refresh grid by updating the users array (Angular change detection will update the grid)
-        this.users = [...this.users];
-        
-        alert(`User "${newFullName}" updated successfully!`);
-      }
-    }
+    this.router.navigate(['/user-edit', userId]);
   }
 
   /**
-   * Delete user functionality
+   * Delete user functionality - Navigate to delete page
    */
   deleteUser(userId: number, userData: SafeUser): void {
-    const confirmed = confirm(`Are you sure you want to delete user "${userData.fullName}"?`);
-    
-    if (confirmed) {
-      // In a real app, this would call an API
-      console.log('Deleting user:', userId);
-
-      // Remove from local data (simulated)
-      this.users = this.users.filter(u => u.id !== userId);
-      
-      alert(`User "${userData.fullName}" deleted successfully!`);
-    }
+    this.router.navigate(['/user-delete', userId]);
   }
 
   /**

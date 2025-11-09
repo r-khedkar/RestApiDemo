@@ -139,6 +139,55 @@ export class AuthService {
   }
 
   /**
+   * Update user information
+   */
+  updateUser(updatedUser: SafeUser): boolean {
+    const userIndex = this.mockUsers.findIndex(u => u.id === updatedUser.id);
+    
+    if (userIndex === -1) {
+      return false;
+    }
+
+    // Keep the existing password and update other fields
+    this.mockUsers[userIndex] = {
+      ...this.mockUsers[userIndex],
+      fullName: updatedUser.fullName,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      lastLogin: new Date()
+    };
+
+    // Update localStorage
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(this.mockUsers));
+    
+    return true;
+  }
+
+  /**
+   * Delete user by ID
+   */
+  deleteUser(userId: number): boolean {
+    const userIndex = this.mockUsers.findIndex(u => u.id === userId);
+    
+    if (userIndex === -1) {
+      return false;
+    }
+
+    // Don't allow deleting the currently logged-in user
+    const currentUser = this.getCurrentUser();
+    if (currentUser && currentUser.id === userId) {
+      return false;
+    }
+
+    this.mockUsers.splice(userIndex, 1);
+    
+    // Update localStorage
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(this.mockUsers));
+    
+    return true;
+  }
+
+  /**
    * Search users by name, username, or email
    */
   searchUsers(searchTerm: string): SafeUser[] {

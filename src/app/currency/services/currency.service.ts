@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Currency, SelectedCurrency, SortOrder } from '../models/currency.model';
-import { TimeUtilService } from '../utils/time-util.service';
+import { TimeUtilService } from '../../utils/time-util.service';
 import { CURRENCIES, ASIAN_CURRENCY_CODES, DEFAULT_CURRENCY_COUNT, MIN_CURRENCY_COUNT, MAX_CURRENCY_COUNT } from '../constants/currency.constants';
 
 /**

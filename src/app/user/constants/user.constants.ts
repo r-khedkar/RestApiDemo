@@ -58,7 +58,8 @@ export const MOCK_USERS: User[] = [
 export const STORAGE_KEYS = {
   CURRENT_USER: 'currentUser',
   AUTH_TOKEN: 'authToken',
-  REMEMBER_ME: 'rememberMe'
+  REMEMBER_ME: 'rememberMe',
+  USERS: 'users'
 } as const;
 
 /**

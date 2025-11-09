@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../user/services/auth.service';
 import { ValidationService } from '../utils/validation.service';
-import { LoginCredentials } from '../models/user.model';
+import { LoginCredentials } from '../user/models/user.model';
 
 /**
  * Login component handling user authentication

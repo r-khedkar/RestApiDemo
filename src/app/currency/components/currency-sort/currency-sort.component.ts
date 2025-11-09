@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { Currency, SelectedCurrency, SortOrder } from '../models/currency.model';
-import { CurrencyService } from '../services/currency.service';
+import { NavbarComponent } from '../../../navbar/navbar.component';
+import { Currency, SelectedCurrency, SortOrder } from '../../models/currency.model';
+import { CurrencyService } from '../../services/currency.service';
 
 @Component({
   selector: 'app-currency-sort',

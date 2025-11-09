@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { VALIDATION_RULES, AUTH_MESSAGES } from '../constants/user.constants';
-import { ValidationError, PasswordStrength } from '../models/user.model';
+import { VALIDATION_RULES, AUTH_MESSAGES } from '../user/constants/user.constants';
+import { ValidationError, PasswordStrength } from '../user/models/user.model';
 
 /**
  * Service for form validation and password strength checking
