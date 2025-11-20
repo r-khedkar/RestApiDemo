@@ -24,13 +24,22 @@ export class CurrencyService {
    * Sort currencies by closing time
    * @param currencies - Array of currencies to sort
    * @param order - Sort order (asc or desc)
+   * Secondary sort: If closing times are equal, sort by currency code alphabetically
    */
   sortByClosingTime(currencies: Currency[], order: SortOrder): Currency[] {
     return [...currencies].sort((a, b) => {
       const timeA = this.timeUtil.parseTimeToNumber(a.closingTime);
       const timeB = this.timeUtil.parseTimeToNumber(b.closingTime);
       
-      return order === 'asc' ? timeA - timeB : timeB - timeA;
+      // Primary sort: by closing time
+      const timeDiff = order === 'asc' ? timeA - timeB : timeB - timeA;
+      
+      // Secondary sort: if closing times are equal, sort by currency code alphabetically
+      if (timeDiff === 0) {
+        return a.code.localeCompare(b.code);
+      }
+      
+      return timeDiff;
     });
   }
 

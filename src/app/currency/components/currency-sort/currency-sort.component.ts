@@ -21,6 +21,8 @@ export class CurrencySortComponent implements OnInit {
   sendSuccess: boolean = false;
   sendError: string = '';
   showReviewModal: boolean = false;
+  searchLetter: string = '';
+  filteredCurrencies: Currency[] = [];
 
   constructor(private currencyService: CurrencyService) { }
 
@@ -34,6 +36,32 @@ export class CurrencySortComponent implements OnInit {
   private loadAndSortCurrencies(order: SortOrder): void {
     const currencies = this.currencyService.getAllCurrencies();
     this.sortedCurrencies = this.currencyService.sortByClosingTime(currencies, order);
+    this.filteredCurrencies = [...this.sortedCurrencies];
+  }
+
+  /**
+   * Filter currencies by starting letter
+   * Filtered currencies maintain the time-based sort order,
+   * with alphabetical sorting as secondary criteria for same closing times
+   */
+  filterByLetter(letter: string): void {
+    this.searchLetter = letter.toUpperCase();
+    if (!this.searchLetter) {
+      this.filteredCurrencies = [...this.sortedCurrencies];
+    } else {
+      this.filteredCurrencies = this.sortedCurrencies.filter(
+        currency => currency.code.startsWith(this.searchLetter) || 
+                    currency.name.toUpperCase().startsWith(this.searchLetter)
+      );
+    }
+  }
+
+  /**
+   * Clear letter filter
+   */
+  clearFilter(): void {
+    this.searchLetter = '';
+    this.filteredCurrencies = [...this.sortedCurrencies];
   }
 
   /**
@@ -45,6 +73,10 @@ export class CurrencySortComponent implements OnInit {
       this.sortedCurrencies,
       order
     );
+    this.filteredCurrencies = [...this.sortedCurrencies];
+    if (this.searchLetter) {
+      this.filterByLetter(this.searchLetter);
+    }
   }
 
   /**
